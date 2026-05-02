@@ -16,7 +16,10 @@ let package = Package(
         .executableTarget(
             name: "VRAMTuner",
             dependencies: [],
-            path: "Sources"
+            path: "Sources",
+            resources: [
+                .process("icon.png")
+            ]
         )
     ]
 )

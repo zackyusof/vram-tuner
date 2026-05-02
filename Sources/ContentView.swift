@@ -350,8 +350,3 @@ struct StatusCard: View {
         .cornerRadius(8)
     }
 }
-
-#Preview {
-    ContentView()
-        .environmentObject(VRAMViewModel())
-}
