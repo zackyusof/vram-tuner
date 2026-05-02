@@ -32,6 +32,15 @@ install: build
 	@mkdir -p /tmp/VRAMTuner.app/Contents/MacOS
 	@mkdir -p /tmp/VRAMTuner.app/Contents/Resources
 	@cp $(BUILD_DIR)/release/VRAMTuner /tmp/VRAMTuner.app/Contents/MacOS/
+	@chmod +x /tmp/VRAMTuner.app/Contents/MacOS/VRAMTuner
+	@if [ -f "Sources/icon.png" ]; then \
+		echo "  Adding icon..."; \
+		mkdir -p /tmp/VRAMTuner.iconset; \
+		sips -z 16 16 Sources/icon.png --out /tmp/VRAMTuner.iconset/icon_16x16.png 2>/dev/null || cp Sources/icon.png /tmp/VRAMTuner.app/Contents/Resources/AppIcon.png; \
+		if [ -d "/tmp/VRAMTuner.iconset" ]; then \
+			iconutil -c icns -o /tmp/VRAMTuner.app/Contents/Resources/AppIcon.icns /tmp/VRAMTuner.iconset 2>/dev/null || true; \
+		fi; \
+	fi
 	@echo '<?xml version="1.0" encoding="UTF-8"?>' > /tmp/VRAMTuner.app/Contents/Info.plist
 	@echo '<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">' >> /tmp/VRAMTuner.app/Contents/Info.plist
 	@echo '<plist version="1.0">' >> /tmp/VRAMTuner.app/Contents/Info.plist
@@ -39,6 +48,7 @@ install: build
 	@echo '  <key>CFBundleDevelopmentRegion</key><string>en</string>' >> /tmp/VRAMTuner.app/Contents/Info.plist
 	@echo '  <key>CFBundleExecutable</key><string>VRAMTuner</string>' >> /tmp/VRAMTuner.app/Contents/Info.plist
 	@echo '  <key>CFBundleIdentifier</key><string>com.local.vramtuner</string>' >> /tmp/VRAMTuner.app/Contents/Info.plist
+	@echo '  <key>CFBundleIconFile</key><string>AppIcon</string>' >> /tmp/VRAMTuner.app/Contents/Info.plist
 	@echo '  <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>' >> /tmp/VRAMTuner.app/Contents/Info.plist
 	@echo '  <key>CFBundleName</key><string>VRAMTuner</string>' >> /tmp/VRAMTuner.app/Contents/Info.plist
 	@echo '  <key>CFBundlePackageType</key><string>APPL</string>' >> /tmp/VRAMTuner.app/Contents/Info.plist

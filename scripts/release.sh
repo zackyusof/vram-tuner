@@ -33,6 +33,16 @@ mkdir -p "$BUNDLE/Contents/Resources"
 cp "$BUILD_DIR/VRAMTuner" "$BUNDLE/Contents/MacOS/"
 chmod +x "$BUNDLE/Contents/MacOS/VRAMTuner"
 
+# Add icon if available
+if [ -f "Sources/icon.png" ]; then
+  echo "  Adding icon..."
+  mkdir -p /tmp/VRAMTuner.iconset
+  sips -z 16 16 Sources/icon.png --out /tmp/VRAMTuner.iconset/icon_16x16.png 2>/dev/null || cp Sources/icon.png "$BUNDLE/Contents/Resources/AppIcon.png"
+  if [ -d "/tmp/VRAMTuner.iconset" ]; then
+    iconutil -c icns -o "$BUNDLE/Contents/Resources/AppIcon.icns" /tmp/VRAMTuner.iconset 2>/dev/null || true
+  fi
+fi
+
 # Create Info.plist
 cat > "$BUNDLE/Contents/Info.plist" << 'EOF'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -42,6 +52,7 @@ cat > "$BUNDLE/Contents/Info.plist" << 'EOF'
   <key>CFBundleDevelopmentRegion</key><string>en</string>
   <key>CFBundleExecutable</key><string>VRAMTuner</string>
   <key>CFBundleIdentifier</key><string>com.local.vramtuner</string>
+  <key>CFBundleIconFile</key><string>AppIcon</string>
   <key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
   <key>CFBundleName</key><string>VRAMTuner</string>
   <key>CFBundlePackageType</key><string>APPL</string>

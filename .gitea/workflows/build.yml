@@ -39,6 +39,15 @@ jobs:
           cp .build/release/VRAMTuner /tmp/VRAMTuner.app/Contents/MacOS/
           chmod +x /tmp/VRAMTuner.app/Contents/MacOS/VRAMTuner
 
+          # Add icon if available
+          if [ -f "Sources/icon.png" ]; then
+            mkdir -p /tmp/VRAMTuner.iconset
+            sips -z 16 16 Sources/icon.png --out /tmp/VRAMTuner.iconset/icon_16x16.png 2>/dev/null || cp Sources/icon.png /tmp/VRAMTuner.app/Contents/Resources/AppIcon.png
+            if [ -d "/tmp/VRAMTuner.iconset" ]; then
+              iconutil -c icns -o /tmp/VRAMTuner.app/Contents/Resources/AppIcon.icns /tmp/VRAMTuner.iconset 2>/dev/null || true
+            fi
+          fi
+
       - name: Verify app
         run: |
           ls -la /tmp/VRAMTuner.app/Contents/MacOS/VRAMTuner
