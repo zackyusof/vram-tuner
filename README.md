@@ -318,5 +318,3 @@ For issues:
 ---
 
 **Made with ❤️ for macOS LLM enthusiasts**
-
-Questions? Check the [blog post](https://blog.peddals.com/en/fine-tune-vram-size-of-mac-for-llm/) for more technical details.
