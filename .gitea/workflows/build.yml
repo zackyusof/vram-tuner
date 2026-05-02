@@ -1,0 +1,86 @@
+name: Build & Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        swift-version: ['5.9', '5.10']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Swift
+        uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: ${{ matrix.swift-version }}
+
+      - name: Check Swift version
+        run: swift --version
+
+      - name: Build
+        run: swift build -c release -v
+
+      - name: Test compilation
+        run: |
+          ls -la .build/release/VRAMTuner
+          file .build/release/VRAMTuner
+
+      - name: Create app bundle
+        run: |
+          mkdir -p /tmp/VRAMTuner.app/Contents/MacOS
+          mkdir -p /tmp/VRAMTuner.app/Contents/Resources
+          cp .build/release/VRAMTuner /tmp/VRAMTuner.app/Contents/MacOS/
+          chmod +x /tmp/VRAMTuner.app/Contents/MacOS/VRAMTuner
+
+      - name: Verify app
+        run: |
+          ls -la /tmp/VRAMTuner.app/Contents/MacOS/VRAMTuner
+          file /tmp/VRAMTuner.app/Contents/MacOS/VRAMTuner
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: VRAMTuner-${{ matrix.swift-version }}
+          path: .build/release/VRAMTuner
+          retention-days: 30
+
+  lint:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Swift format check
+        run: |
+          swift --version
+          find Sources -name "*.swift" -exec echo "Checking: {}" \;
+      - name: Validate Package.swift
+        run: swift package describe
+
+  deploy:
+    needs: [build, lint]
+    runs-on: macos-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build release binary
+        run: swift build -c release
+      - name: Create release notes
+        run: |
+          echo "# Release: $(git describe --tags --always)" > RELEASE_NOTES.md
+          echo "## Build Info" >> RELEASE_NOTES.md
+          echo "- Swift: $(swift --version)" >> RELEASE_NOTES.md
+          echo "- Built: $(date)" >> RELEASE_NOTES.md
+          cat RELEASE_NOTES.md
+      - name: Upload to releases
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: .build/release/VRAMTuner
+          body_path: RELEASE_NOTES.md

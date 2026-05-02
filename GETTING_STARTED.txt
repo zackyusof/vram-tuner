@@ -1,0 +1,161 @@
+╔════════════════════════════════════════════════════════════════════╗
+║                    VRAM TUNER — GETTING STARTED                    ║
+║                   macOS GPU Memory Optimizer App                    ║
+╚════════════════════════════════════════════════════════════════════╝
+
+PROJECT LOCATION: ~/VRAMTuner
+STATUS: ✅ Complete and ready to build
+
+═══════════════════════════════════════════════════════════════════════
+
+STEP 1: TRANSFER TO YOUR MAC
+
+Option A: Clone from Gitea (if you have account setup)
+  git clone git@git.gonz3.net:zack/vram-tuner.git ~/VRAMTuner
+
+Option B: Transfer via SCP
+  scp -r user@linux-server:~/VRAMTuner ~/VRAMTuner
+
+Option C: Manual copy
+  - Create folder ~/VRAMTuner on Mac
+  - Copy all files from this directory
+
+═══════════════════════════════════════════════════════════════════════
+
+STEP 2: BUILD ON YOUR MAC
+
+Open Terminal on your Mac, then:
+
+  cd ~/VRAMTuner
+  make install
+
+That's it! The app will be installed to /Applications/VRAMTuner.app
+
+═══════════════════════════════════════════════════════════════════════
+
+STEP 3: LAUNCH & USE
+
+Find the GPU icon in your menu bar (top right)
+Click it → "Show Window"
+
+Or: Cmd+Space → type "VRAM Tuner" → Enter
+
+═══════════════════════════════════════════════════════════════════════
+
+WHAT'S INCLUDED IN THIS FOLDER:
+
+Sources/
+  ├── VRAMTuner.swift    - App code + logic
+  └── ContentView.swift  - User interface (SwiftUI)
+
+Package.swift            - Swift Package manifest
+Makefile                 - Build automation (make build/install/run)
+README.md                - Complete documentation
+QUICKSTART.md            - User guide
+BUILD_INSTRUCTIONS.md    - How to build on Mac (this is what you need)
+GETTING_STARTED.txt      - This file
+
+═══════════════════════════════════════════════════════════════════════
+
+REQUIREMENTS:
+
+✓ macOS 13.0+ (Ventura or newer)
+✓ Apple Silicon Mac (M1/M2/M3/M4)
+✓ Xcode Command Line Tools (run: xcode-select --install)
+✓ Admin/sudo access for VRAM changes
+
+═══════════════════════════════════════════════════════════════════════
+
+QUICK REFERENCE:
+
+Build:                make build
+Build + Install:      make install
+Run (no install):     make run
+Open in Xcode:        make xcode
+Clean build:          make clean
+
+═══════════════════════════════════════════════════════════════════════
+
+FIRST TIME SETUP ON MAC:
+
+1. Install Xcode Command Line Tools:
+   xcode-select --install
+
+2. Get the code:
+   git clone ... ~/VRAMTuner
+   OR
+   scp -r user@server:~/VRAMTuner ~/VRAMTuner
+
+3. Build & install:
+   cd ~/VRAMTuner
+   make install
+
+4. Launch:
+   /Applications/VRAMTuner.app
+   OR click GPU icon in menu bar
+
+═══════════════════════════════════════════════════════════════════════
+
+FEATURES:
+
+✓ Check current GPU memory allocation
+✓ Set custom VRAM limits
+✓ Auto-recommend optimal allocation
+✓ Reset to system defaults
+✓ Advanced: CPU reserve calculator
+✓ Advanced: Make settings persistent
+✓ Menu bar integration for quick access
+✓ Dark mode support
+✓ No external dependencies
+
+═══════════════════════════════════════════════════════════════════════
+
+EXAMPLE USAGE:
+
+On a 32GB Mac:
+  - Default GPU allocation: 21.33 GB (66%)
+  - Click "Use Recommended": Sets to 24 GB
+  - Result: Can run 32B models smoothly
+  - Faster inference, longer contexts
+
+On a 64GB Mac:
+  - Default GPU allocation: 49.15 GB (75%)
+  - Click "Use Recommended": Sets to 56 GB
+  - Result: Can run 70B models
+  - Use with Ollama, LM Studio, or Dify
+
+═══════════════════════════════════════════════════════════════════════
+
+TROUBLESHOOTING:
+
+Q: "swift: command not found"
+A: Run: xcode-select --install
+
+Q: App won't build
+A: Check Swift version (should be 5.9+): swift --version
+
+Q: App asks for password
+A: That's normal! It needs sudo to change VRAM. Enter your Mac password.
+
+Q: Want to uninstall
+A: rm -rf /Applications/VRAMTuner.app
+
+═══════════════════════════════════════════════════════════════════════
+
+DOCUMENTATION:
+
+For detailed info, see:
+- README.md         - Full technical documentation
+- QUICKSTART.md     - User guide with examples
+- BUILD_INSTRUCTIONS.md - Detailed build/install help
+
+═══════════════════════════════════════════════════════════════════════
+
+YOU'RE READY! 🚀
+
+Just transfer to your Mac and run: make install
+
+Questions? Check the docs or refer to the original blog post:
+https://blog.peddals.com/en/fine-tune-vram-size-of-mac-for-llm/
+
+═══════════════════════════════════════════════════════════════════════
