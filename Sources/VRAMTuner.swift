@@ -3,7 +3,7 @@ import Foundation
 
 @main
 struct VRAMTunerApp: App {
-    @StateObject private var appDelegate = AppDelegate()
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     var body: some Scene {
         WindowGroup {
